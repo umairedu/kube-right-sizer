@@ -1,5 +1,0 @@
-apiVersion: v2
-name: resource-right-sizing
-description: A Helm chart for resource-right-sizing
-type: application
-version: 0.1.15

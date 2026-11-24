@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "right-sizer.name" . }}
+  labels:
+    {{- include "right-sizer.labels" . | nindent 4 }}
+---
+# read-only: it lists pods and replicasets, it never changes anything
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "right-sizer.name" . }}
+  labels:
+    {{- include "right-sizer.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces", "pods"]
+    verbs: ["list"]
+  - apiGroups: ["apps"]
+    resources: ["replicasets"]
+    verbs: ["list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "right-sizer.name" . }}
+  labels:
+    {{- include "right-sizer.labels" . | nindent 4 }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "right-sizer.name" . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "right-sizer.name" . }}

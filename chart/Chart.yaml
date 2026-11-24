@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kube-right-sizer
+description: Weekly CPU and memory recommendations for your workloads, from Prometheus usage history
+type: application
+version: 1.0.0
+appVersion: "1.0.0"

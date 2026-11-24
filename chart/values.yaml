@@ -1,0 +1,34 @@
+image:
+  repository: docker.io/umairedu/kube-right-sizer
+  tag: ""  # defaults to the chart appVersion
+  pullPolicy: IfNotPresent
+
+schedule: "0 6 * * 1"  # Monday 06:00
+
+# Passed to the container as environment variables. See docs/settings.md.
+env:
+  PROMETHEUS_URL: http://prometheus-server.monitoring.svc:9090
+  TARGET_NAMESPACE: ""
+  EXCLUDED_NAMESPACES: kube-system,kube-public,kube-node-lease
+  HOURS: "168"
+  BUFFER_PERCENT: "20"
+  OUTPUT_FORMAT: both
+
+slack:
+  channel: ""
+  verifySSL: true
+  # Name of an existing secret with a SLACK_TOKEN key. Preferred over token.
+  existingSecret: ""
+  token: ""
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
