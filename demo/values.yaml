@@ -1,0 +1,7 @@
+image:
+  tag: demo
+  pullPolicy: Never
+env:
+  PROMETHEUS_URL: http://prometheus.monitoring.svc:9090
+  TARGET_NAMESPACE: shop,billing
+  HOURS: "1"
