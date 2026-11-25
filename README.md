@@ -68,13 +68,15 @@ spec:
 ## Installing
 
 ```bash
-# from the clone, pointed at your Prometheus
-helm upgrade --install right-sizer ./chart -n right-sizer --create-namespace \
+# point it at your Prometheus
+helm upgrade --install right-sizer oci://ghcr.io/umairedu/charts/kube-right-sizer --version 1.1.0 \
+  -n right-sizer --create-namespace \
   --set env.PROMETHEUS_URL=http://prometheus-server.monitoring.svc:9090
 
 # optional: Slack. The bot needs chat:write and files:write, and has to be in the channel.
 kubectl -n right-sizer create secret generic slack-bot --from-literal=SLACK_TOKEN=xoxb-...
-helm upgrade right-sizer ./chart -n right-sizer --reuse-values \
+helm upgrade right-sizer oci://ghcr.io/umairedu/charts/kube-right-sizer --version 1.1.0 \
+  -n right-sizer --reuse-values \
   --set slack.channel=C0123456789 --set slack.existingSecret=slack-bot
 
 # it runs on Mondays at 06:00, this runs it right now
@@ -82,7 +84,7 @@ kubectl -n right-sizer create job first-run --from=cronjob/right-sizer
 kubectl -n right-sizer logs -f job/first-run
 ```
 
-The service account can list namespaces, pods and replicasets. That's all it gets.
+The service account can list namespaces, pods and replicasets. That's all it gets. If you'd rather change the chart itself, it's in `chart/` and `./chart` works in place of the oci:// address.
 
 The YAML in the output is a set of patches, one per workload. The right home for the new numbers is your manifests or Helm values, otherwise the next deploy puts the old ones back. If you just want to try one:
 
